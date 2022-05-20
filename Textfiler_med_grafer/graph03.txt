@@ -1,0 +1,20 @@
+vertice 01
+vertice 02
+vertice 03
+vertice 04
+vertice 05
+vertice 06
+vertice 07
+
+vertice 03#vertice 01#4
+vertice 03#vertice 06#5
+vertice 04#vertice 03#2
+vertice 01#vertice 04#1
+vertice 04#vertice 06#8
+vertice 01#vertice 02#2
+vertice 02#vertice 04#3
+vertice 02#vertice 05#10
+vertice 04#vertice 05#2
+vertice 04#vertice 07#4
+vertice 05#vertice 07#6
+vertice 07#vertice 06#1
