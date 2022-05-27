@@ -29,22 +29,25 @@ private:
 	int nodes = 0; 
 	// the list of pointers to all the nodes so we dont loos them :(
 	std::vector<Node*> NodeList;
-	int* parent;
+	int* parent = nullptr;
 	// a matrix that represents the graph
 	std::vector<std::vector<int>> matrix;
 	//helper funktion
 	std::vector<std::string> split_by_delimiter(std::string text);
 	void makeMatrix();
-	int findIndex(std::string find);
+	int findIndex(std::string find) const;
 	void union1(int i, int j);
 	int find(int i);
+	int minDistance(int dist[], bool sptSet[]) const;
+	//std::vector<std::vector<int>> dijkstra(int src) const;
+	
 
 public:
 	Graph(std::string filename); // throws an exception as a string if not possible to open the file
 	Graph(const Graph& other);
 	Graph(Graph&& other);
-	//Graph& operator=(const Graph& other) = delete;
-	//Graph& operator=(Graph&& other) = delete;
+	Graph& operator=(const Graph& other);
+	Graph& operator=(Graph&& other);
 	~Graph();
 	int nrOfNodes() const;
 	int nrOfEdges() const;
@@ -52,6 +55,16 @@ public:
 	void kruskalMST();
 };
 
+inline int Graph::minDistance(int dist[], bool sptSet[]) const
+{
+	int min = INT_MAX, min_index;
+
+	for (int v = 0; v < this->nodes; v++)
+		if (sptSet[v] == false && dist[v] <= min)
+			min = dist[v], min_index = v;
+
+	return min_index;
+}
 
 inline std::vector<std::string> Graph::split_by_delimiter(std::string text)
 {
@@ -72,8 +85,6 @@ inline int Graph::find(int i)
 	return i;
 }
 
-// Skapar union av i och j. Retunerar
-// falsk om i och j är i samma union in same redan
 inline void Graph::union1(int i, int j)
 {
 	int a = find(i);
@@ -81,7 +92,7 @@ inline void Graph::union1(int i, int j)
 	this->parent[a] = b;
 }
 
-inline int Graph::findIndex(std::string find)
+inline int Graph::findIndex(std::string find) const
 {
 	for (int i = 0; i < this->NodeList.size(); i++)
 		if (this->NodeList[i]->value == find)
@@ -99,7 +110,7 @@ inline void Graph::makeMatrix()
 		this->matrix.push_back(temp);
 	for (int i = 0; i < this->nodes; i++)
 		for (int x = 0; x < this->nodes; x++)
-			this->matrix[i].push_back(INT_MAX);
+			this->matrix[i].push_back(0);
 
 	//remake the graph to a matrix
 	for (int i = 0; i < this->nodes - 1; i++)
@@ -130,6 +141,26 @@ Graph::Graph(Graph&& other)
 	
 }
 
+inline Graph& Graph::operator=(const Graph& other)
+{
+	if (&other != this);
+	this->NodeList = other.NodeList;
+	this->edges = other.edges;
+	this->matrix = other.matrix;
+	this->edges = other.edges;
+	return *this;
+}
+
+inline Graph& Graph::operator=(Graph&& other)
+{
+	if (&other != this);
+	this->NodeList = other.NodeList;
+	this->edges = other.edges;
+	this->matrix = other.matrix;
+	this->edges = other.edges;
+	return *this;
+}
+
 Graph::Graph(std::string filename) //opens graph-file
 {
 	std::ifstream File;
@@ -152,7 +183,7 @@ Graph::Graph(std::string filename) //opens graph-file
 			}
 		}
 		this->nodes = this->NodeList.size();
-		this->parent = new int[this->nodes];
+		this->parent = new int[this->NodeList.size()];
 		for (std::string node : conections)
 		{
 			std::vector<std::string> conections_list = split_by_delimiter(node);
@@ -206,9 +237,95 @@ inline int Graph::nrOfEdges() const
 	return this->edges;
 }
 
+void const printPath(std::vector<int> parent, int j)
+{
+	
+	if (parent[j] = 0)
+		return;
+	std::cout << j << " ";
+	printPath(parent, parent[j]);
+}
+
+//inline std::vector<std::vector<int>> Graph::dijkstra(int src) const
+//{
+//	std::vector<int> parent;
+//	for (int i = 0; i < this->nodes; i++)
+//	{
+//		parent.push_back(NULL);
+//	}
+//	int* dist = new int[this->nodes];
+//	bool* sptSet = new bool[this->nodes];
+//
+//	for (int i = 0; i < this->nodes; i++)
+//		dist[i] = INT_MAX, sptSet[i] = false;
+//
+//	dist[src] = 0;
+//
+//	for (int count = 0; count < this->nodes; count++) {
+//
+//		int currentNode = minDistance(dist, sptSet);
+//		sptSet[currentNode] = true;
+//
+//		for (int nextNode = 0; nextNode < this->nodes; nextNode++)
+//		{
+//			if (!sptSet[nextNode] && this->matrix[currentNode][nextNode] && dist[currentNode] + this->matrix[currentNode][nextNode] < dist[nextNode] && this->matrix[currentNode][nextNode] != INT_MAX)
+//			{
+//				parent[nextNode] = currentNode;
+//				dist[nextNode] = dist[currentNode] + this->matrix[currentNode][nextNode];
+//			}
+//		}
+//	}
+//	std::vector<std::vector<int>> returnvactor;
+//	std::vector<int>  temp;
+//	for (int i = 0; i < this->nodes; i++)
+//	{
+//		temp.push_back(src);
+//		temp.push_back(i);
+//		temp.push_back(dist[i]);
+//		temp.push_back(src);
+//		//printPath(parent, temp, i);
+//		returnvactor.push_back(temp);
+//		temp.clear();
+//	}
+//	return returnvactor;
+//
+//}
+
 inline void Graph::shortestPathFrom(std::string& from, std::string& to, std::vector<std::pair<int, std::string>>& shortestPath) const//Dijktras BFS
 {
-	return;
+	std::vector<int> parent;
+	for (int i = 0; i < this->nodes; i++)
+	{
+		parent.push_back(NULL);
+	}
+	int* dist = new int[this->nodes];
+	bool* sptSet = new bool[this->nodes];
+
+	for (int i = 0; i < this->nodes; i++)
+		dist[i] = INT_MAX, sptSet[i] = false;
+
+	dist[findIndex(from)] = 0;
+
+	for (int count = 0; count < this->nodes; count++) {
+
+		int currentNode = minDistance(dist, sptSet);
+		sptSet[currentNode] = true;
+
+		for (int nextNode = 0; nextNode < this->nodes; nextNode++)
+		{
+			if (!sptSet[nextNode] && this->matrix[currentNode][nextNode] && dist[currentNode] + this->matrix[currentNode][nextNode] < dist[nextNode] && this->matrix[currentNode][nextNode] != INT_MAX)
+			{
+				parent[nextNode] = currentNode;
+				dist[nextNode] = dist[currentNode] + this->matrix[currentNode][nextNode];
+			}
+		}
+	}
+
+	std::vector<int> temp;
+
+	//hitta vägen
+	std::cout << findIndex(from);
+	printPath(parent, findIndex(from));
 }
 
 inline void Graph::kruskalMST()
