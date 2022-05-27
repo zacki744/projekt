@@ -239,12 +239,12 @@ inline int Graph::nrOfEdges() const
 
 void const printPath(std::vector<int> parent, int j)
 {
-	
-	if (parent[j] = 0)
+	if (parent[j] < 0)
 		return;
-	std::cout << j << " ";
 	printPath(parent, parent[j]);
+	std::cout << j << " ";
 }
+
 
 //inline std::vector<std::vector<int>> Graph::dijkstra(int src) const
 //{
