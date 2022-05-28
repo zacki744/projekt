@@ -7,6 +7,7 @@
 
 int main()
 {
+	
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	Graph* graph = nullptr;
 	std::pair<std::string, std::string> from_to[6];

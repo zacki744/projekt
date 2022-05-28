@@ -143,20 +143,24 @@ Graph::Graph(Graph&& other)
 inline Graph& Graph::operator=(const Graph& other)
 {
 	if (&other != this);
-	this->NodeList = other.NodeList;
-	this->edges = other.edges;
-	this->matrix = other.matrix;
-	this->edges = other.edges;
+	{
+		this->NodeList = other.NodeList;
+		this->nodes = other.nodes;
+		this->edges = other.edges;
+		this->matrix = other.matrix;
+	}
 	return *this;
 }
 
 inline Graph& Graph::operator=(Graph&& other)
 {
 	if (&other != this);
-	this->NodeList = other.NodeList;
-	this->edges = other.edges;
-	this->matrix = other.matrix;
-	this->edges = other.edges;
+	{
+		this->NodeList = other.NodeList;
+		this->nodes = other.nodes;
+		this->edges = other.edges;
+		this->matrix = other.matrix;
+	}
 	return *this;
 }
 
@@ -224,6 +228,7 @@ Graph::~Graph()
 		delete x;
 	}
 	delete[] this->parent;
+	this->parent = nullptr;
 	//radera wallah
 }
 
