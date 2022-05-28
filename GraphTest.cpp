@@ -61,6 +61,7 @@ int main()
 		{
 			std::cout << e << std::endl;
 		}
+		graph->kruskalMST();
 		delete graph;
 	}
 
