@@ -251,16 +251,20 @@ inline void Graph::kruskalMST()
 	int mincost = 0; // lägsta kostnaden av MST.
 	int V = this->nodes;
 
-	//initierar uppsättningarna av osammanhängade uppsättningar
+	////initierar uppsättningarna av osammanhängade uppsättningar
 	for (int i = 0; i < V; i++)
 		this->parent[i] = i;
 	//insätter minimum kostnade bågar en efter en
 	int edge_count = 0;
-	while (edge_count < V - 1) {
+	while (edge_count < V - 1) 
+	{
 		int min = INT_MAX, a = -1, b = -1;
-		for (int i = 0; i < V; i++) {
-			for (int j = 0; j < V; j++) {
-				if (find(i) != find(j) && this->matrix[i][j] < min) {
+		for (int i = 0; i < V; i++) 
+		{
+			for (int j = 0; j < V; j++) 
+			{
+				if (find(i) != find(j) && this->matrix[i][j] < min) 
+				{
 					min = this->matrix[i][j];
 					a = i;
 					b = j;
