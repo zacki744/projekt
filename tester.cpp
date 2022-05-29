@@ -1,5 +1,5 @@
-#include "Graph.h"
-
+#include "Graph.cpp"
+//#include "Graph.h"
 int main()
 {
 	Graph theBestGraph("graph01.txt");

@@ -8,10 +8,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #project ("test")
 project (graph)
 project (graph-test1)
-project (graph-test2)
 # Add source to this project's executable.
 #add_executable (test "Graph.h" "GraphMain.cpp")
-add_executable (graph "Graph.h" "tester.cpp" )
-add_executable (graph-test1 "Graph.h" "GraphTest.cpp" )
-# TODO: Add tests and install targets if needed.
+add_executable (graph  "tester.cpp"  "Graph.cpp")
+add_executable (graph-test1  "GraphTest.cpp"  "Graph.cpp")
 
